@@ -16,3 +16,6 @@
 [submodule "bundle/vim-markdown"]
 	path = bundle/vim-markdown
 	url = git://github.com/plasticboy/vim-markdown.git
+[submodule "bundle/vitality.vim"]
+	path = bundle/vitality.vim
+	url = git://github.com/sjl/vitality.vim.git

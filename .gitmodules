@@ -19,3 +19,6 @@
 [submodule "bundle/vitality.vim"]
 	path = bundle/vitality.vim
 	url = git://github.com/sjl/vitality.vim.git
+[submodule "bundle/vim-powerline"]
+	path = bundle/vim-powerline
+	url = git://github.com/Lokaltog/vim-powerline.git

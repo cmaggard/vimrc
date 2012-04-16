@@ -25,3 +25,6 @@
 [submodule "bundle/jellybeanas.vim"]
 	path = bundle/jellybeanas.vim
 	url = git://github.com/nanotech/jellybeans.vim.git
+[submodule "bundle/vim-scratch"]
+	path = bundle/vim-scratch
+	url = git://github.com/duff/vim-scratch.git

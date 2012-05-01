@@ -87,17 +87,20 @@ colorscheme jellybeans
 map <leader>q :ruby finder.rescan!<CR>
 
 set foldmethod=indent
+set foldlevelstart=18
 
 set backupdir=~/.vim/.backup,.,/tmp
 set directory=.,~/.vim/.backup,/tmp
 
-map <leader>s /\s$<CR>
+map <leader>s /\s+$<CR>
 
 " Command-T
 map <leader>t <Esc>:CommandT<CR>
 map <leader>T <Esc>:CommandTFlush<CR>
 map <leader>m <Esc>:CommandTBuffer<CR>
 map <leader>y :!pbcopy && pbpaste<CR>u
+set wildignore+=*.o,*.obj,.git,coverage
+
 
 let g:tagbar_usearrows = 1
 nnoremap <leader>l :TagbarToggle<CR>

@@ -40,6 +40,3 @@
 [submodule "bundle/vim-matchit"]
 	path = bundle/vim-matchit
 	url = https://github.com/tsaleh/vim-matchit.git
-[submodule "bundle/smyck-colorscheme"]
-	path = bundle/smyck-colorscheme
-	url = https://github.com/hukl/Smyck-Color-Scheme.git

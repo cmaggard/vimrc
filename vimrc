@@ -92,13 +92,12 @@ set foldlevelstart=18
 set backupdir=~/.vim/.backup,.,/tmp
 set directory=.,~/.vim/.backup,/tmp
 
-map <leader>s /\s+$<CR>
+map <Leader>s :%s/\s\+$//<Enter><Enter>
 
-" Command-T
-map <leader>t <Esc>:CommandT<CR>
-map <leader>T <Esc>:CommandTFlush<CR>
-map <leader>m <Esc>:CommandTBuffer<CR>
-map <leader>y :!pbcopy && pbpaste<CR>u
+" Ctrl-P
+map <leader>t <Esc>:CtrlP<CR>
+map <leader>T <Esc>:CtrlPClearCache<CR>
+map <leader>m <Esc>:CtrlPBuffer<CR>
 set wildignore+=*.o,*.obj,.git,coverage
 
 

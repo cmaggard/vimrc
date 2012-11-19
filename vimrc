@@ -271,3 +271,8 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 nnoremap <leader>a :cp<cr>
 nnoremap <leader>s :cn<cr>
+
+" ctags
+let g:tagbar_ctags_bin='/usr/local/bin/ctags'
+let g:tagbar_width=26
+noremap <silent> <leader>d :TagbarToggle<CR>

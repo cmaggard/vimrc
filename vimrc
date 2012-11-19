@@ -1,65 +1,75 @@
+"" Pathogen setup
 filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 filetype plugin indent on	
 
-set showcmd
-" Indentation options
-set tabstop=2  " 2 spaces instead of tabs
-set smarttab
-set shiftwidth=2
+" Window setup
+
 set autoindent
+set backspace=indent,eol,start
+set cursorline
 set expandtab
-set backspace=start,indent
-autocmd FileType make		set noexpandtab
-autocmd FileType python set tabstop=4
-autocmd FileType python set softtabstop=4
-autocmd FileType python set shiftwidth=4
-
-" Line numbers in gutter
-set number
-
-" Underline whole line cursor is on
-":set cursorline
-
-" Enable syntax highlighting
-syntax enable
-
-" Hide unused buffers instead of opening and closing
 set hidden
-
-" Switch bookmark jump keys
-nnoremap ` '
-nnoremap ' `
+set history=10000
+set ignorecase smartcase
+set number
+set scrolloff=3
+set shiftwidth=2
+set showcmd
+set smartcase
+set smarttab
+set t_ti= t_te=
+set tabstop=2
+set cmdheight=2
+set switchbuf=useopen
+set title
+set wildmenu
+set ruler
+set wildmode=longest,list
+set winwidth=79
+set hlsearch
+set incsearch
+syntax enable
+autocmd FileType make		set noexpandtab
+autocmd FileType python set shiftwidth=4
+autocmd FileType python set softtabstop=4
+autocmd FileType python set tabstop=4
 
 " Set leader key
 let mapleader = ","
 
-" Set higher command history
-set history=1000
+" CUSTOM AUTOCMDS
+augroup vimrcEx
+  " Clear all autocmds in the group
+  autocmd!
+  autocmd FileType text setlocal textwidth=78
+  " Jump to last cursor position unless it's invalid or in an event handler
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
-" View options with tab completion
-set wildmenu
-set wildmode=list:longest
+  "for ruby, autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType python set sw=4 sts=4 et
 
-" Ignore search case unless used with a capital letter
-set ignorecase
-set smartcase
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass 
 
-set title
+  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
+  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
 
-" See more context when scrolling
-set scrolloff=3
+  " Indent p tags
+  autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
 
-" Show position in lower right
-set ruler
+  " Don't syntax highlight markdown because it's often wrong
+  autocmd! FileType mkd setlocal syn=off
 
-" OS-specific junk
-filetype on
-filetype plugin on
-filetype indent on
-set hlsearch
-set incsearch
+  " Leave the return key alone when in command line windows, since it's used
+  " to run commands there.
+  autocmd! CmdwinEnter * :unmap <cr>
+  autocmd! CmdwinLeave * :call MapCR()
+augroup END
 
 "Map ESCAPE into something within reach
 " (remap Caps-Lock to Control for maximum punch)
@@ -77,14 +87,12 @@ autocmd BufReadPost *
     \ exe "normal g`\"" |
     \ endif
 
-map <leader><space> :nohl<CR>
-map <leader>s :RunSpec 
 
 set background=dark
-"colorscheme elflord
-"colorscheme desert
 colorscheme jellybeans
-map <leader>q :ruby finder.rescan!<CR>
+set laststatus=2   " Always show the statusline
+set encoding=utf-8 " Necessary to show unicode glyphs
+let g:Powerline_symbols = 'fancy'
 
 set foldmethod=indent
 set foldlevelstart=18
@@ -94,26 +102,51 @@ set directory=.,~/.vim/.backup,/tmp
 
 map <Leader>s :%s/\s\+$//<Enter><Enter>
 
-" Ctrl-P
-map <leader>t <Esc>:CtrlP<CR>
-map <leader>T <Esc>:CtrlPClearCache<CR>
-map <leader>m <Esc>:CtrlPBuffer<CR>
+" Command-T
+map <leader>t <Esc>:CommandT<CR>
+map <leader>T <Esc>:CommandTFlush<CR>
+map <leader>m <Esc>:CommandTBuffer<CR>
+map <leader>y "*y
+" Move around splits with <c-hjkl>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
+" Can't be bothered to understand ESC vs <c-c> in insert mode
+vmap <C-c> <Esc>
+imap <C-c> <Esc>
+" Clear the search buffer when hitting return
+function! MapCR()
+  nnoremap <cr> :nohlsearch<cr>
+endfunction
+call MapCR()
+nnoremap <leader><leader> <c-^>
 set wildignore+=*.o,*.obj,.git,coverage
+
+
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
 
 
 let g:tagbar_usearrows = 1
 nnoremap <leader>l :TagbarToggle<CR>
 
-" Powerline configs
-"set nocompatible   " Disable vi-compatibility
-set laststatus=2   " Always show the statusline
-set encoding=utf-8 " Necessary to show unicode glyphs
-set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
-let g:Powerline_symbols = 'fancy'
 
-" 80-col gutter
+" 120-col gutter
 if exists('+colorcolumn')
-  set colorcolumn=81
+  set colorcolumn=121
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
@@ -121,6 +154,7 @@ hi ColorColumn ctermbg=darkgray guibg=#1c1c1c
 
 " Vitality.vim tweaks
 "let g:vitality_fix_cursor = 0
+let g:vitality_fix_focus = 0
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,8 +210,64 @@ function! RunNearestTest()
     call RunTestFile(":" . spec_line_number . " -b")
 endfunction
 
-map <leader>r :call RunTestFile()<cr>
-map <leader>R :call RunNearestTest()<cr>
-map <leader>a :call RunTests('')<cr>:
+map <leader>r :VroomRunTestFile<cr>
+map <leader>R :VroomRunNearestTest<cr>
+"map <leader>a :VroomRunTests('')<cr>:
 
 
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CUSTOM AUTOCMDS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup vimrcEx
+  " Clear all autocmds in the group
+  autocmd!
+  autocmd FileType text setlocal textwidth=78
+  " Jump to last cursor position unless it's invalid or in an event handler
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  "for ruby, autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType python set sw=4 sts=4 et
+
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass 
+
+  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
+  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
+
+  " Indent p tags
+  autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
+
+  " Don't syntax highlight markdown because it's often wrong
+  autocmd! FileType mkd setlocal syn=off
+
+  " Leave the return key alone when in command line windows, since it's used
+  " to run commands there.
+  autocmd! CmdwinEnter * :unmap <cr>
+  autocmd! CmdwinLeave * :call MapCR()
+augroup END
+
+if exists('$TMUX')
+  let &t_SI = "\<Esc>[3 q"
+  let &t_EI = "\<Esc>[0 q"
+endif
+
+" RENAME CURRENT FILE
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+nnoremap <leader>a :cp<cr>
+nnoremap <leader>s :cn<cr>

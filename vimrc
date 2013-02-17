@@ -107,6 +107,8 @@ map <leader>t <Esc>:CommandT<CR>
 map <leader>T <Esc>:CommandTFlush<CR>
 map <leader>m <Esc>:CommandTBuffer<CR>
 map <leader>y "*y
+set wildignore+=public/assets/*
+set wildignore+=node_modules/*
 " Move around splits with <c-hjkl>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -124,6 +126,7 @@ endfunction
 call MapCR()
 nnoremap <leader><leader> <c-^>
 set wildignore+=*.o,*.obj,.git,coverage
+map <leader>w <Esc>:!powder restart<CR>
 
 
 " MULTIPURPOSE TAB KEY
@@ -176,7 +179,8 @@ function! RunTests(filename)
         if filereadable("script/test")
             exec ":!script/test " . a:filename
         elseif filereadable("Gemfile")
-            exec ":!bundle exec rspec --color " . a:filename
+            " should be bundle exec
+            exec ":!rspec --color " . a:filename
         else
             exec ":!rspec --color " . a:filename
         end
@@ -210,6 +214,7 @@ function! RunNearestTest()
     call RunTestFile(":" . spec_line_number . " -b")
 endfunction
 
+let g:vroom_use_bundle_exec=0
 map <leader>r :VroomRunTestFile<cr>
 map <leader>R :VroomRunNearestTest<cr>
 "map <leader>a :VroomRunTests('')<cr>:

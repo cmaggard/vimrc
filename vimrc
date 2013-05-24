@@ -39,38 +39,6 @@ autocmd FileType python set tabstop=4
 " Set leader key
 let mapleader = ","
 
-" CUSTOM AUTOCMDS
-augroup vimrcEx
-  " Clear all autocmds in the group
-  autocmd!
-  autocmd FileType text setlocal textwidth=78
-  " Jump to last cursor position unless it's invalid or in an event handler
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  "for ruby, autoindent with two spaces, always expand tabs
-  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set sw=4 sts=4 et
-
-  autocmd! BufRead,BufNewFile *.sass setfiletype sass 
-
-  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
-  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
-
-  " Indent p tags
-  autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
-
-  " Don't syntax highlight markdown because it's often wrong
-  autocmd! FileType mkd setlocal syn=off
-
-  " Leave the return key alone when in command line windows, since it's used
-  " to run commands there.
-  autocmd! CmdwinEnter * :unmap <cr>
-  autocmd! CmdwinLeave * :call MapCR()
-augroup END
-
 "Map ESCAPE into something within reach
 " (remap Caps-Lock to Control for maximum punch)
 " Linux note: On linux, <C-Space> == <Nul>
@@ -95,25 +63,30 @@ set encoding=utf-8 " Necessary to show unicode glyphs
 let g:Powerline_symbols = 'fancy'
 
 set foldmethod=indent
-set foldlevelstart=18
+autocmd Syntax * normal zR
 
 set backupdir=~/.vim/.backup,.,/tmp
 set directory=.,~/.vim/.backup,/tmp
 
 map <Leader>s :%s/\s\+$//<Enter><Enter>
+map <leader>o :!open %<CR><CR>
 
 " Command-T
 map <leader>t <Esc>:CommandT<CR>
 map <leader>T <Esc>:CommandTFlush<CR>
 map <leader>m <Esc>:CommandTBuffer<CR>
 map <leader>y "*y
+" Rails ignores
 set wildignore+=public/assets/*
+set wildignore+=app/assets/fonts/*
+set wildignore+=app/assets/images/*
+set wildignore+=log/*
+set wildignore+=tmp/*
+set wildignore+=doc/*
+" Homeroom ignore
+set wildignore+=public/course/*
+" Node ignore
 set wildignore+=node_modules/*
-" Move around splits with <c-hjkl>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
 " Insert a hash rocket with <c-l>
 imap <c-l> <space>=><space>
 " Can't be bothered to understand ESC vs <c-c> in insert mode
@@ -281,3 +254,24 @@ nnoremap <leader>s :cn<cr>
 let g:tagbar_ctags_bin='/usr/local/bin/ctags'
 let g:tagbar_width=26
 noremap <silent> <leader>d :TagbarToggle<CR>
+
+" indentLine
+let g:indentLine_color_term = 235
+let g:indentLine_color_gui = '#333333'
+
+" Split keymappings
+set splitbelow
+set splitright
+nnoremap <M-right> <C-w>l
+nnoremap <M-left> <C-w>h
+nnoremap <M-down> <C-w>j
+nnoremap <M-up> <C-w>k
+nnoremap <M-,> :split<CR><C-w>j " Horizontal split
+nnoremap <M-.> :vsplit<CR><C-w>l " Vertical split
+nnoremap <M-/> :close<CR>
+nnoremap <M-<> <C-w>K " Convert vertical to horizontal split
+nnoremap <M->> <C-w>L " Convert horizontal to vertical split
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l

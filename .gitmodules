@@ -46,3 +46,15 @@
 [submodule "bundle/VimClojure"]
 	path = bundle/VimClojure
 	url = git://github.com/vim-scripts/VimClojure.git
+[submodule "bundle/ack.vim"]
+	path = bundle/ack.vim
+	url = git://github.com/mileszs/ack.vim.git
+[submodule "bundle/nerdcommenter"]
+	path = bundle/nerdcommenter
+	url = git://github.com/scrooloose/nerdcommenter.git
+[submodule "bundle/sparkup"]
+	path = bundle/sparkup
+	url = git://github.com/rstacruz/sparkup.git
+[submodule "bundle/indentLine"]
+	path = bundle/indentLine
+	url = git://github.com/Yggdroot/indentLine.git

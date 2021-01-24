@@ -1,100 +1,110 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plug 'tpope/vim-sensible'
 
 " Themes
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'brendonrapp/smyck-vim'
-Plugin 'altercation/vim-colors-solarized'
+Plug 'nanotech/jellybeans.vim'
+Plug 'brendonrapp/smyck-vim'
+Plug 'altercation/vim-colors-solarized'
 
-Plugin 'Yggdroot/indentLine' " Shows vertical lines on indentations
+Plug 'Yggdroot/indentLine' " Shows vertical lines on indentations
+" Fix auto-conceal on JSON files by indentLine plugin
+"autocmd BufNewFile,BufRead *.json set ft=javascript
+
+"autocmd FileType js setlocal shiftwidth=2 tabstop=2
 
 
 " General-Use Plugins
-Plugin 'wincent/command-t' " File Search
-Plugin 'tpope/vim-fugitive' " Git
-Plugin 'scrooloose/nerdcommenter' " Comment Toggling
-Plugin 'majutsushi/tagbar' " CTags
-Plugin 'bling/vim-airline' " Status Bar
-Plugin 'mtth/scratch.vim' " Scratchpad
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "File
+Plug 'junegunn/fzf.vim'                                           "Search
+Plug 'tpope/vim-fugitive' " Git
+Plug 'scrooloose/nerdcommenter' " Comment Toggling
+Plug 'majutsushi/tagbar' " CTags
+Plug 'bling/vim-airline' " Status Bar
+Plug 'mtth/scratch.vim' " Scratchpad
 
-Plugin 'tpope/vim-endwise' "Auto-'end' bits for Ruby,Lua,C/C++
-Plugin 'tmhedberg/matchit' " % Matching for HTML/XML/etc
-Plugin 'tpope/vim-unimpaired' " General-use bracket mappings
+Plug 'tpope/vim-endwise' "Auto-'end' bits for Ruby,Lua,C/C++
+Plug 'tmhedberg/matchit' " % Matching for HTML/XML/etc
+Plug 'tpope/vim-unimpaired' " General-use bracket mappings
 
-Plugin 'sjl/vitality.vim' " iTerm2/Tmux niceties
+Plug 'sjl/vitality.vim' " iTerm2/Tmux niceties
+
+Plug 'tpope/vim-projectionist' " Alternate file mapping support
+Plug 'tpope/vim-surround' " More surrounding chords
+Plug 'SirVer/UltiSnips'  " Snippet framework
+Plug 'honza/vim-snippets' "Snippets
+
 
 
 " Language Support
-Plugin 'kchmck/vim-coffee-script' " CoffeeScript
-Plugin 'elixir-lang/vim-elixir' " Elixir
-Plugin 'lambdatoast/elm.vim' " Elm
-Plugin 'leafo/moonscript-vim' " MoonScript
-Plugin 'cakebaker/scss-syntax.vim' " SCSS
-Plugin 'tpope/vim-fireplace' " Clojure REPL
-Plugin 'ledger/vim-ledger' " Ledger data files
-Plugin 'plasticboy/vim-markdown' " Markdown
-Plugin 'tpope/vim-ragtag' " XML/HTML
-Plugin 'tpope/vim-rails' " Rails
-Plugin 'tpope/vim-rake' " vim-rails for non-rails ruby projects
-Plugin 'vim-ruby/vim-ruby' " Ruby
-Plugin 'ecomba/vim-ruby-refactoring' " Ruby refactoring
-Plugin 'slim-template/vim-slim' " Slim
-Plugin 'skalnik/vim-vroom' " Rspec Test runner
-Plugin 'vim-scripts/VimClojure' " Clojure
+"Plug 'kchmck/vim-coffee-script' " CoffeeScript
+Plug 'elixir-lang/vim-elixir' " Elixir
+"Plugin 'avdgaag/vim-phoenix' " Phoenix Framework
+Plug 'c-brenn/phoenix.vim' " Phoenix
+"Plug 'lambdatoast/elm.vim' " Elm
+"Plug 'leafo/moonscript-vim' " MoonScript
+"Plug 'cakebaker/scss-syntax.vim' " SCSS
+"Plug 'tpope/vim-fireplace' " Clojure REPL
+Plug 'ledger/vim-ledger' " Ledger data files
+Plug 'plasticboy/vim-markdown' " Markdown
+Plug 'tpope/vim-ragtag' " XML/HTML
+Plug 'tpope/vim-rails' " Rails
+Plug 'tpope/vim-rake' " vim-rails for non-rails ruby projects
+Plug 'vim-ruby/vim-ruby' " Ruby
+Plug 'ecomba/vim-ruby-refactoring' " Ruby refactoring
+Plug 'slim-template/vim-slim' " Slim
+autocmd BufNewFile,BufRead *.slim set ft=slim
+Plug 'skalnik/vim-vroom' " Rspec Test runner
+"Plug 'vim-scripts/VimClojure' " Clojure
+"Plug 'rhysd/vim-crystal' " Crystal
+Plug 'pangloss/vim-javascript' " Javascript
+"Plug 'mxw/vim-jsx' " React JSX
+Plug 'posva/vim-vue' " .vue files
+Plug 'rust-lang/rust.vim' " Rust
+Plug 'hashivim/vim-terraform'
 
+call plug#end()
 
-call vundle#end()
-filetype plugin indent on
+" Eat shit, netrw. No one likes you.
+autocmd FileType netrw setl bufhidden=wipe
+let g:netrw_fastbrowse = 0
 
-
-" Window setup
-
-set autoindent
-set backspace=indent,eol,start
-"set cursorline
 set expandtab
+set shiftwidth=2
 set hidden
 set history=10000
 set ignorecase smartcase
 set number
 set scrolloff=3
-set shiftwidth=2
 set showcmd
 set smartcase
-set smarttab
 set t_ti= t_te=
 set tabstop=2
-set cmdheight=2
+"set cmdheight=2  " 2018-03-18
+set cmdheight=1
 set switchbuf=useopen
 set title
-set wildmenu
-set ruler
 set wildmode=longest,list
 "set winwidth=79
 set hlsearch
-set incsearch
-syntax enable
 autocmd FileType make		set noexpandtab
 autocmd FileType python set shiftwidth=4
 autocmd FileType python set softtabstop=4
 autocmd FileType python set tabstop=4
+autocmd FileType ruby set softtabstop=2
 
 set background=light
 "colorscheme solarized
+set background=light
 colorscheme jellybeans
-set background=dark
+
+
+set backupdir=~/.vim/.backup,.,/tmp
+set directory=.,~/.vim/.backup,/tmp
 
 " Set leader key
 let mapleader = ","
+nmap <space> ,
 
 "Map ESCAPE into something within reach
 " (remap Caps-Lock to Control for maximum punch)
@@ -113,9 +123,10 @@ autocmd BufReadPost *
     \ endif
 
 
-set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show unicode glyphs
+
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
@@ -124,6 +135,8 @@ let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 "let g:airline_branch_prefix = '⎇ '
 let g:airline_symbols#branch= '⎇ '
 "let g:airline_branch_prefix = ' '
@@ -132,19 +145,43 @@ let g:airline_symbols#readonly= ''
 let g:airline_symbols#linenr = ' '
 
 
+" buffer stuf
+" This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+" nmap <leader>m :enew<cr>  " 2018-03-18
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+
+
+
 set foldmethod=indent
 autocmd Syntax * normal zR
-
-set backupdir=~/.vim/.backup,.,/tmp
-set directory=.,~/.vim/.backup,/tmp
 
 map <Leader>s :%s/\s\+$//<Enter><Enter>
 map <leader>o :!open %<CR><CR>
 
 " Command-T
-map <leader>t <Esc>:CommandT<CR>
-map <leader>T <Esc>:CommandTFlush<CR>
-map <leader>m <Esc>:CommandTBuffer<CR>
+map <leader>t <Esc>:GFiles<CR>
+
+" Maybe something else?
+map <leader>T <Esc>:Files<CR>
+
+map <leader>m <Esc>:Buffers<CR>
 map <leader>y "*y
 "map <leader>z <Esc>:!rails runner %<CR>
 " Rails ignores
@@ -161,6 +198,14 @@ set wildignore+=db/migrate/archive/*
 set wildignore+=vendor/assets/bower_components/*
 " Node ignore
 set wildignore+=node_modules/*
+" Phoenix ignore
+set wildignore+=deps/*
+set wildignore+=_build/*
+"set wildignore+=db/*
+set wildignore+=*.ez
+set wildignore+=priv/static
+
+
 " Insert a hash rocket with <c-l>
 imap <c-l> <space>=><space>
 " Can't be bothered to understand ESC vs <c-c> in insert mode
@@ -304,6 +349,8 @@ nnoremap <M->> <C-w>L " Convert horizontal to vertical split
 "nnoremap <c-l> <c-w>l
 
 
+nnoremap <C-c> :bp\|bd #<CR>
+
 
 
 let g:html_indent_tags = 'nav'
@@ -332,3 +379,5 @@ augroup END
         "\ }
         "\ }
 "endif
+"
+autocmd FileType netrw setl bufhidden=delete
